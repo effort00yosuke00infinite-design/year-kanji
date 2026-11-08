@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7fb">
+  <title>今年の自分を表す漢字一文字</title>
+  <style>
+    :root {
+      --ink: #243047;
+      --muted: #64748b;
+      --blue: #315fce;
+      --blue-dark: #244ba8;
+      --line: #e3e8f0;
+      --paper: #ffffff;
+      --bg: #f5f7fb;
+      --green: #18794e;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN",
+        "Yu Gothic", Meiryo, sans-serif;
+      line-height: 1.75;
+    }
+    main { width: min(760px, calc(100% - 32px)); margin: 0 auto; padding: 34px 0 52px; }
+    .hero {
+      background: linear-gradient(135deg, #eaf0ff, #f3f6ff 60%, #edf7f4);
+      border: 1px solid #e1e8fa;
+      border-radius: 24px;
+      padding: 30px 28px 26px;
+      margin-bottom: 20px;
+    }
+    .eyebrow { color: var(--blue); font-weight: 700; font-size: .82rem; letter-spacing: .08em; }
+    h1 { font-size: clamp(1.65rem, 5vw, 2.35rem); line-height: 1.35; margin: 8px 0 12px; }
+    .lead { color: #4b5870; margin: 0; }
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 24px;
+      margin-top: 16px;
+      box-shadow: 0 5px 18px rgba(31, 48, 78, .04);
+    }
+    h2 { font-size: 1.15rem; margin: 0 0 12px; }
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 18px; }
+    .step { background: rgba(255,255,255,.72); border: 1px solid #e4eaf5; border-radius: 14px; padding: 12px; }
+    .step b { display: block; color: var(--blue); font-size: .88rem; }
+    .step span { font-size: .9rem; }
+    .note { color: var(--muted); font-size: .9rem; margin: 10px 0 0; }
+    .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; }\n    .actions > :first-child { grid-column: 1 / -1; }
+    button, .link-button {
+      appearance: none; border: 0; border-radius: 13px; min-height: 54px;
+      display: flex; align-items: center; justify-content: center; gap: 9px;
+      padding: 13px 16px; font: inherit; font-weight: 700; text-decoration: none;
+      cursor: pointer; transition: transform .12s ease, background .12s ease;
+    }
+    button:active, .link-button:active { transform: translateY(1px); }
+    .primary { color: #fff; background: var(--blue); }
+    .primary:hover { background: var(--blue-dark); }
+    .secondary { color: var(--blue-dark); background: #edf2ff; border: 1px solid #dce5ff; }
+    .secondary:hover { background: #e3ebff; }
+    .status { min-height: 1.5em; margin: 10px 0 0; color: var(--green); font-weight: 700; font-size: .9rem; }
+    details { margin-top: 18px; }
+    summary { cursor: pointer; font-weight: 700; color: #40516d; }
+    .prompt {
+      margin-top: 12px; padding: 16px; border-radius: 12px; background: #f7f9fc;
+      border: 1px solid var(--line); white-space: pre-wrap; font-size: .88rem;
+      max-height: 360px; overflow: auto;
+    }
+    footer { text-align: center; color: var(--muted); font-size: .82rem; margin-top: 24px; }
+    @media (max-width: 560px) {
+      main { padding-top: 18px; }
+      .hero, .card { padding: 21px 18px; border-radius: 17px; }
+      .steps { grid-template-columns: 1fr; }
+      .step { display: flex; gap: 10px; align-items: baseline; }
+      .step b { min-width: 76px; }
+      .actions { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <section class="hero">
+    <div class="eyebrow">YEAR IN REVIEW</div>
+    <h1>今年の自分を表す<br>漢字一文字を見つけよう。</h1>
+    <p class="lead">AIと会話しながら、この一年の出来事を振り返ってみよう。大きな出来事でなくても大丈夫。小さな思い出も、漢字を選ぶヒントになります。</p>
+    <div class="steps">
+      <div class="step"><b>STEP 1</b><span>出来事を思い出す</span></div>
+      <div class="step"><b>STEP 2</b><span>漢字の候補を考える</span></div>
+      <div class="step"><b>STEP 3</b><span>自分で一文字を選ぶ</span></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>さあ、始めよう！</h2>
+    <p>① 下のボタンでプロンプトをコピーする。<br>
+       ② AIを開いて、コピーした文章を貼り付けて送信する。<br>
+       ③ AIの質問に答えながら、一年を振り返る。</p>
+    <div class="actions">
+      <button class="primary" id="copyBtn" type="button">▣　プロンプトをコピー</button>
+      <a class="link-button secondary" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">↗　ChatGPTを開く</a>
+      <a class="link-button secondary" href="https://gemini.google.com/" target="_blank" rel="noopener noreferrer">✦　Geminiを開く</a>
+    </div>
+    <p class="status" id="status" role="status" aria-live="polite"></p>
+    <p class="note">コピーした後、AIの入力欄を長押し（または右クリック）して「ペースト／貼り付け」を選んでね。</p>
+    <details>
+      <summary>プロンプトの内容を確認する</summary>
+      <div class="prompt" id="promptPreview"></div>
+    </details>
+  </section>
+
+  <section class="card">
+    <h2>振り返るときのヒント</h2>
+    <p>思い出せないときは、次のようなことを考えてみよう。</p>
+    <ul>
+      <li>学校行事やクラスであったこと</li>
+      <li>友達や家族との出来事</li>
+      <li>部活動や勉強で頑張ったこと</li>
+      <li>初めて経験したこと・新しく始めたこと</li>
+      <li>うれしかったこと、悔しかったこと</li>
+      <li>去年と比べて変わったこと</li>
+    </ul>
+    <p class="note">うまく思い出せなくても大丈夫。AIが別の質問をしてくれるよ。話したくないことは答えなくても構いません。</p>
+  </section>
+  <footer>自分の一年を振り返って、自分が納得できる漢字を選ぼう。</footer>
+</main>
+
+<script>
+const promptText = `# AIと振り返ろう！今年の自分を表す漢字一文字
+
+あなたは、私の一年間を振り返るためのインタビュアーです。
+AIとの対話を通して、今年の自分を表す漢字一文字を一緒に見つけてください。
+
+## 1．対話の進め方
+私に質問をしながら、今年あった出来事をたくさん思い出させてください。
+
+【最も大切なルール】
+- 一つの出来事を深く掘り下げすぎないでください。
+- いろいろなジャンルから、次々に質問してください。
+- 質問は必ず一つずつしてください。
+- 私の回答が短くても、否定せずに次の質問に進んでください。
+- 私が思い出せない場合は、別のテーマに切り替えてください。
+- 私が話していない出来事を勝手に作らないでください。
+- 最初から漢字の候補を出さないでください。
+
+## 2．質問するテーマ
+次のようなテーマを参考に、幅広く質問してください。
+
+① 学校生活：入学式や始業式、体育祭、文化祭、修学旅行、クラス替え、授業やテスト
+② 友達・人間関係：新しい友達、友達との思い出、けんかや仲直り、誰かに助けてもらったこと
+③ 部活動・習い事：大会や試合、練習で頑張ったこと、新しく始めたこと、できるようになったこと
+④ 自分自身：挑戦したこと、失敗したこと、うれしかったこと、悔しかったこと、去年と比べて変わったこと
+⑤ 日常生活：家族との思い出、趣味や遊び、旅行やお出かけ、初めて経験したこと
+⑥ その他：今年特に印象に残っていること、大変だったこと、頑張ったこと、今年のニュースや世の中の出来事
+
+## 3．質問の仕方
+例えば、次のように質問してください。
+- 今年、新しい友達はできた？
+- 今年、一番楽しかった学校行事は？
+- 部活動で印象に残っていることは？
+- 今年、何か新しく始めたことは？
+- 今年、去年より成長したと思うことは？
+- 今年、一番笑った出来事は？
+- 今年、悔しかったことや失敗したことは？
+- 今年、誰かに感謝したことは？
+
+毎回同じような質問にならないように工夫してください。
+
+## 4．一年間の出来事を整理する
+ある程度たくさんの出来事が集まったら、これまでの回答を整理してください。
+- 今年あった主な出来事
+- 今年の自分の気持ち
+- 今年頑張ったこと
+- 今年の自分に起きた変化
+
+そのうえで、私の一年間を表すキーワードを3〜5個考えてください。
+
+## 5．漢字一文字を決める
+私の一年間を表す漢字を5つ程度提案してください。
+それぞれについて、漢字の意味、その漢字を提案した理由、私のどの出来事と関係しているかを説明してください。
+最後は私自身が納得できる漢字を選べるようにしてください。提案された漢字以外を選んでも構いません。
+
+## 6．最終まとめ
+最後に次の内容をまとめてください。
+① 今年の自分を表す漢字一文字
+② その漢字を選んだ理由（具体的な出来事を入れる）
+③ 今年の自分を一言で表すと？
+④ 来年はどんな一年にしたい？
+
+それでは、まずは今年の出来事を思い出すための簡単な質問から始めてください。
+一つのことを深掘りするよりも、まずは一年間の出来事を幅広く、たくさん思い出すことを大切にしてください。`;
+
+document.getElementById("promptPreview").textContent = promptText;
+document.getElementById("copyBtn").addEventListener("click", async () => {
+  const status = document.getElementById("status");
+  try {
+    await navigator.clipboard.writeText(promptText);
+    status.textContent = "コピーしました！AIを開いて貼り付けてね。";
+  } catch (err) {
+    const area = document.createElement("textarea");
+    area.value = promptText;
+    area.style.position = "fixed";
+    area.style.opacity = "0";
+    document.body.appendChild(area);
+    area.select();
+    const copied = document.execCommand("copy");
+    area.remove();
+    status.textContent = copied
+      ? "コピーしました！AIを開いて貼り付けてね。"
+      : "コピーできませんでした。下の「プロンプトの内容を確認する」から文章を選択してコピーしてください。";
+  }
+});
+</script>
+</body>
+</html>
