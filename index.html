@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f5f7fb">
+<title>今年の自分を表す漢字一文字</title>
+<style>
+:root{--ink:#243047;--muted:#64748b;--blue:#315fce;--blue-dark:#244ba8;--line:#e3e8f0;--paper:#fff;--bg:#f5f7fb;--green:#18794e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;line-height:1.7}
+main{width:min(760px,calc(100% - 28px));margin:0 auto;padding:22px 0 42px}
+.hero{background:linear-gradient(135deg,#eaf0ff,#f3f6ff 60%,#edf7f4);border:1px solid #e1e8fa;border-radius:22px;padding:25px 22px;margin-bottom:16px}
+.eyebrow{color:var(--blue);font-weight:700;font-size:.82rem;letter-spacing:.08em}
+h1{font-size:clamp(1.55rem,5vw,2.2rem);line-height:1.35;margin:8px 0 12px}
+.lead{color:#4b5870;margin:0}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:18px}
+.step{background:#ffffffb8;border:1px solid #e4eaf5;border-radius:13px;padding:10px}
+.step b{display:block;color:var(--blue);font-size:.85rem}
+.step span{font-size:.9rem}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:19px;padding:20px;margin-top:15px;box-shadow:0 5px 18px #1f304e0a}
+h2{font-size:1.12rem;margin:0 0 9px}
+.note{color:var(--muted);font-size:.88rem;margin:8px 0 0}
+button{appearance:none;border:0;border-radius:13px;min-height:50px;padding:12px 16px;font:inherit;font-weight:700;cursor:pointer}
+.primary{color:#fff;background:var(--blue)}
+.primary:disabled{opacity:.55;cursor:wait}
+.secondary{color:var(--blue-dark);background:#edf2ff;border:1px solid #dce5ff}
+#chatCard[hidden]{display:none}
+.chatlog{display:flex;flex-direction:column;gap:12px;margin:15px 0;max-height:55vh;overflow:auto;padding:2px}
+.bubble{max-width:90%;padding:12px 15px;border-radius:16px;white-space:pre-wrap;overflow-wrap:anywhere}
+.bot{align-self:flex-start;background:#f0f3f9;border:1px solid #e3e8f0}
+.student{align-self:flex-end;background:#e9efff;border:1px solid #d9e4ff}
+.chatform{display:flex;gap:8px;align-items:flex-end}
+textarea{width:100%;min-height:54px;max-height:150px;resize:vertical;border:1px solid #cbd5e1;border-radius:12px;padding:12px;font:inherit;font-size:16px;color:var(--ink)}
+.chatform button{min-width:82px}
+.status{min-height:1.5em;color:var(--muted);font-size:.88rem;margin:8px 0 0}
+footer{text-align:center;color:var(--muted);font-size:.8rem;margin-top:20px}
+@media(max-width:560px){.hero,.card{padding:19px 16px;border-radius:16px}.steps{grid-template-columns:1fr}.step{display:flex;gap:10px;align-items:baseline}.step b{min-width:76px}.chatform{align-items:stretch}.chatform button{min-width:70px;padding:10px}}
+</style>
+</head>
+<body>
+<main>
+<section class="hero">
+<div class="eyebrow">YEAR IN REVIEW</div>
+<h1>今年の自分を表す<br>漢字一文字を見つけよう。</h1>
+<p class="lead">AIと会話しながら、この一年の出来事を振り返ってみよう。大きな出来事でなくても大丈夫。小さな思い出も、漢字を選ぶヒントになります。</p>
+<div class="steps">
+<div class="step"><b>STEP 1</b><span>出来事を思い出す</span></div>
+<div class="step"><b>STEP 2</b><span>漢字の候補を考える</span></div>
+<div class="step"><b>STEP 3</b><span>自分で一文字を選ぶ</span></div>
+</div>
+</section>
+
+<section class="card" id="startCard">
+<h2>さあ、始めよう！</h2>
+<p>ボタンを押すと、AIとの対話が始まります。AIの質問に一つずつ答えながら、一年を振り返ってみましょう。</p>
+<button class="primary" id="startBtn" type="button">対話を始める</button>
+<p class="note">名前・住所・電話番号など、個人が特定される情報は入力しないでください。話したくないことは答えなくても構いません。</p>
+</section>
+
+<section class="card" id="chatCard" hidden>
+<h2>AIと一年を振り返ろう</h2>
+<div class="chatlog" id="chatLog" aria-live="polite"></div>
+<form class="chatform" id="chatForm">
+<textarea id="answer" maxlength="1200" placeholder="ここに答えを入力してください…" aria-label="回答"></textarea>
+<button class="primary" id="sendBtn" type="submit">送信</button>
+</form>
+<p class="status" id="status" role="status" aria-live="polite"></p>
+<button class="secondary" id="restartBtn" type="button">最初からやり直す</button>
+</section>
+
+<section class="card">
+<h2>振り返るときのヒント</h2>
+<ul>
+<li>学校行事やクラスであったこと</li>
+<li>友達や周りの人との出来事</li>
+<li>部活動や勉強で頑張ったこと</li>
+<li>初めて経験したこと・新しく始めたこと</li>
+<li>うれしかったこと、悔しかったこと</li>
+<li>去年と比べて変わったこと</li>
+<li>趣味や遊び、旅行やお出かけ</li>
+</ul>
+<p class="note">思い出せないときは、別のテーマの質問に切り替えてもらおう。</p>
+</section>
+<footer>自分の一年を振り返って、自分が納得できる漢字を選ぼう。</footer>
+</main>
+<script>
+const startCard=document.getElementById("startCard");
+const chatCard=document.getElementById("chatCard");
+const chatLog=document.getElementById("chatLog");
+const answer=document.getElementById("answer");
+const statusEl=document.getElementById("status");
+const sendBtn=document.getElementById("sendBtn");
+let history=[];
+let busy=false;
+
+function addBubble(text,who){
+  const el=document.createElement("div");
+  el.className="bubble "+(who==="model"?"bot":"student");
+  el.textContent=text;
+  chatLog.appendChild(el);
+  chatLog.scrollTop=chatLog.scrollHeight;
+}
+async function askGemini(){
+  if(busy)return;
+  busy=true;sendBtn.disabled=true;document.getElementById("startBtn").disabled=true;
+  statusEl.textContent="AIが考えています…";
+  try{
+    const res=await fetch("/.netlify/functions/chat",{
+      method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({messages:history})
+    });
+    const data=await res.json().catch(()=>({}));
+    if(!res.ok)throw new Error(data.error||"通信に失敗しました。時間をおいてもう一度試してください。");
+    const reply=(data.reply||"").trim();
+    if(!reply)throw new Error("AIから返事がありませんでした。もう一度送信してください。");
+    history.push({role:"model",text:reply});
+    addBubble(reply,"model");
+    statusEl.textContent="";
+  }catch(e){
+    statusEl.textContent=e.message;
+  }finally{
+    busy=false;sendBtn.disabled=false;document.getElementById("startBtn").disabled=false;
+    answer.focus();
+  }
+}
+document.getElementById("startBtn").addEventListener("click",()=>{
+  startCard.hidden=true;chatCard.hidden=false;
+  history=[{role:"user",text:"対話を始めてください。最初の質問を一つだけしてください。"}];
+  askGemini();
+});
+document.getElementById("chatForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const text=answer.value.trim();
+  if(!text||busy)return;
+  answer.value="";
+  addBubble(text,"user");
+  history.push({role:"user",text});
+  await askGemini();
+});
+document.getElementById("restartBtn").addEventListener("click",()=>{
+  history=[];chatLog.replaceChildren();statusEl.textContent="";
+  chatCard.hidden=true;startCard.hidden=false;answer.value="";
+});
+</script>
+</body>
+</html>
